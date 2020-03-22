@@ -56,8 +56,48 @@ function calculate(maritalStatus, income, children){
 	return check;
 }
 
+var errorCase = {
+	maritalStatus: "Marital Status",
+	income: "Income",
+	children: "Children"
+}
+
+function infoError(formElements){
+	var error = "";
+	if(!formElements.maritalStatus[0].checked || !formElements.maritalStatus[0].checked){
+		error += errorCase.maritalStatus + ", ";
+	}
+
+	if(formElements.income.value.length == 0 || formElements.income.value < 0){
+		error += errorCase.income + ", ";
+	}
+
+	if(formElements.children.value.length == 0 || formElements.children.value < 0){
+		error += errorCase.children;
+	}
+
+	return error;
+}
+
+var errorDiv = document.getElementById("errDiv");
+
+function displayError(error){
+	errorDiv.innerHTML = "Please fill out the following Fields: " + error;
+}
+
+function clearError(){
+	errorDiv.innerHTML = "";
+}
+
 var submitBtn = document.getElementById("submitBtn");
 
 submitBtn.onclick = function(){
-	displayCheck(calculate(userInfo.maritalStatus, userInfo.income, userInfo.children));
+	let errorString = infoError(formElements);
+	console.log(errorString);
+	if(errorString.length > 0){
+		displayError(errorString);
+	} else{
+		clearError();
+		displayCheck(calculate(userInfo.maritalStatus, userInfo.income, userInfo.children));
+	}
 }
