@@ -1,7 +1,11 @@
 from flask import Flask, request
+from flask_cors import CORS
 from flask_restful import Resource, Api
 
 app = Flask(__name__)
+#enable CORS to serve API on localhost ( development only )
+cors = CORS(app)
+########################################
 api = Api(app)
 
 class Check(Resource):
@@ -19,9 +23,10 @@ class Check(Resource):
 			check = 600 * marital_status
 
 		check = check + children * 600
+		print(check)
 		return {'checkTotal': check}
 
-api.add_resource(Check, '/')
+api.add_resource(Check, '/Api/CheckTotal')
 
 if __name__ == '__main__':
 	app.run(debug=True)

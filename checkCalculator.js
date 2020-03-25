@@ -25,6 +25,7 @@ function updateValues(){
 	userInfo.income = formElements.income.value;
 	userInfo.children = formElements.children.value;
 }
+updateValues();
 
 formElements.form.onchange = updateValues;
 
@@ -56,6 +57,18 @@ function calculate(maritalStatus, income, children){
 	return check;
 }
 
+function calculateCheckApi(maritalStatus, income, children){
+	$.ajax({
+		type: "GET",
+		url: "http://127.0.0.1:5000/Api/CheckTotal?marital_status="+maritalStatus+"&income="+income+"&children="+children,
+		success: function(checkTotal){
+			console.log(checkTotal);
+			displayCheck(checkTotal["checkTotal"]);
+		},
+
+	});
+}
+
 var errorCase = {
 	maritalStatus: "Marital Status",
 	income: "Income",
@@ -64,7 +77,7 @@ var errorCase = {
 
 function infoError(formElements){
 	var error = "";
-	if(!formElements.maritalStatus[0].checked || !formElements.maritalStatus[0].checked){
+	if(!formElements.maritalStatus[0].checked && !formElements.maritalStatus[1].checked){
 		error += errorCase.maritalStatus + ", ";
 	}
 
@@ -98,6 +111,7 @@ submitBtn.onclick = function(){
 		displayError(errorString);
 	} else{
 		clearError();
-		displayCheck(calculate(userInfo.maritalStatus, userInfo.income, userInfo.children));
+		//displayCheck(calculate(userInfo.maritalStatus, userInfo.income, userInfo.children));
+		calculateCheckApi(userInfo.maritalStatus, userInfo.income, userInfo.children);
 	}
 }
