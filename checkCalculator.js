@@ -57,16 +57,18 @@ function calculate(maritalStatus, income, children){
 	return check;
 }
 
+var APIendpoint = "https://yson8uaot4.execute-api.us-east-1.amazonaws.com/default/calculate";
+
 function calculateCheckApi(maritalStatus, income, children){
 	$.ajax({
 		type: "GET",
-		url: "http://127.0.0.1:5000/Api/CheckTotal?marital_status="+maritalStatus+"&income="+income+"&children="+children,
+		url: APIendpoint+"?marital_status="+(maritalStatus+1)+"&income="+income+"&children="+children,
 		success: function(checkTotal){
 			console.log(checkTotal);
 			displayCheck(checkTotal["checkTotal"]);
-		},
-
-	});
+		}
+	}
+	);
 }
 
 var errorCase = {
